@@ -24,24 +24,34 @@ Discourse::Application.configure do
 
   config.log_level = :info
 
-  if GlobalSetting.smtp_address
-    settings = {
-      address:              GlobalSetting.smtp_address,
-      port:                 GlobalSetting.smtp_port,
-      domain:               GlobalSetting.smtp_domain,
-      user_name:            GlobalSetting.smtp_user_name,
-      password:             GlobalSetting.smtp_password,
-      authentication:       GlobalSetting.smtp_authentication,
-      enable_starttls_auto: GlobalSetting.smtp_enable_start_tls
-    }
+  config.action_mailer.smtp_settings = {
+    :port =>           ENV['SMTP_PORT'],
+    :address =>        ENV['SMTP_ADDRESS'],
+    :user_name =>      ENV['SMTP_USER'],
+    :password =>       ENV['SMTP_PASSWORD']
+    :domain =>         'iranonrails.ir',
+    :authentication => :login,
+    :enable_starttls_auto => true
+  }
 
-    settings[:openssl_verify_mode] = GlobalSetting.smtp_openssl_verify_mode if GlobalSetting.smtp_openssl_verify_mode
+  #if GlobalSetting.smtp_address
+  #  settings = {
+  #    address:              GlobalSetting.smtp_address,
+  #    port:                 GlobalSetting.smtp_port,
+  #    domain:               GlobalSetting.smtp_domain,
+  #    user_name:            GlobalSetting.smtp_user_name,
+  #    password:             GlobalSetting.smtp_password,
+  #    authentication:       GlobalSetting.smtp_authentication,
+  #    enable_starttls_auto: GlobalSetting.smtp_enable_start_tls
+  #  }
 
-    config.action_mailer.smtp_settings = settings.reject{|_, y| y.nil?}
-  else
-    config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = {arguments: '-i'}
-  end
+  #  settings[:openssl_verify_mode] = GlobalSetting.smtp_openssl_verify_mode if GlobalSetting.smtp_openssl_verify_mode
+
+  #  config.action_mailer.smtp_settings = settings.reject{|_, y| y.nil?}
+  #else
+  #  config.action_mailer.delivery_method = :sendmail
+  #  config.action_mailer.sendmail_settings = {arguments: '-i'}
+  #end
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify

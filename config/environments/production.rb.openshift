@@ -5,11 +5,11 @@ Discourse::Application.configure do
 
   # Amazon SES configuration
   config.action_mailer.smtp_settings = {
-    :port =>           '25',
-    :address =>        'email-smtp.us-east-1.amazonaws.com',
-    :user_name =>      '',
-    :password =>       '',
-    :domain =>         'rhcloud.com',
+    :port =>           ENV['SMTP_PORT'],
+    :address =>        ENV['SMTP_ADDRESS'],
+    :user_name =>      ENV['SMTP_USER'],
+    :password =>       ENV['SMTP_PASSWORD']
+    :domain =>         'iranonrails.ir',
     :authentication => :login,
     :enable_starttls_auto => true
   }
